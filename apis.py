@@ -41,7 +41,7 @@ class DaySummaryAPI(mercadobitcoin):
     def _get_endpoint(self, date: datetime.date) -> str:
         return (f'{self.comecolink}/{self.moeda}/{self.type}/{date.year}/{date.month}/{date.day}')
     
-print(DaySummaryAPI(moeda='BTC').get_data(date=datetime.date(2021, 6, 21)))
+## print(DaySummaryAPI(moeda='BTC').get_data(date=datetime.date(2021, 6, 21)))
 
 
 
@@ -53,7 +53,7 @@ class tradesapi(mercadobitcoin):
         return int(date.timestamp())
 
     def _get_endpoint(self, date_from: datetime.datetime = None, date_to: datetime.datetime = None) -> str:
-
+        
         if date_from and not date_to:
             unix_date_from = self._get_unix_epoch(date_from)
             endpoint = (f'{self.comecolink}/{self.moeda}/{self.type}/{unix_date_from}')
@@ -62,11 +62,12 @@ class tradesapi(mercadobitcoin):
             unix_date_from = self._get_unix_epoch(date_from)
             unix_date_to = self._get_unix_epoch(date_to)
             endpoint = (f'{self.comecolink}/{self.moeda}/{self.type}/{unix_date_from}/{unix_date_to}')
-
+            if date_from > date_to:
+                raise RuntimeError("Data inicial maior que a final")
         else:
             endpoint = (f'{self.comecolink}/{self.moeda}/{self.type}')
         
         return endpoint
 
-print (tradesapi("BTC").get_data(date_from=datetime.datetime(2021, 4, 29)))
-print (tradesapi("BTC").get_data(date_from=datetime.datetime(2021, 4, 29), date_to=datetime.datetime(2022, 4, 29)))
+# print (tradesapi("BTC").get_data(date_from=datetime.datetime(2021, 4, 29)))
+# print (tradesapi("BTC").get_data(date_from=datetime.datetime(2021, 4, 29), date_to=datetime.datetime(2022, 4, 29)))
