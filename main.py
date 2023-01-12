@@ -1,8 +1,7 @@
 #%%
 import datetime
-from sched import scheduler
+import schedule
 import time
-
 from schedule import repeat, every, run_pending
 from ingestors import DaySummaryIngestor
 from writers import DataWriter
@@ -25,6 +24,3 @@ if __name__ == "__main__":
         run_pending()
         time.sleep(0.5)
 
-
-
-# %%
