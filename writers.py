@@ -2,7 +2,8 @@ import datetime
 import json
 import os
 from typing import List
-
+from apis import DaySummaryAPI, tradesapi
+from ingestors import DaySummaryIngestor
 
 class DataTypeNotSupportedForIngestionException(Exception):
     def __init__ (self, data):
@@ -12,6 +13,7 @@ class DataTypeNotSupportedForIngestionException(Exception):
 
 # Inserir dados num arquivo
 class DataWriter:
+    
     def __init__(self, coin: str, api: str) -> None:
         self.api = api
         self.coin = coin
@@ -37,16 +39,3 @@ class DataWriter:
             raise DataTypeNotSupportedForIngestionException(data)
 
 
-#Chamando a api daySummary
-data = DaySummaryAPI("BTC").get_data(date = datetime.date(2023, 1, 7))
-
-##Instanciando um writer para escrever os dados
-writer = DataWriter("Day_Summary.json")
-writer.write(data)
-
-# Fazendo a mesma chamada para API de trades 
-data = tradesapi("BTC").get_data()
-
-writer = DataWriter("trades.json")
-writer.write(data)
-#
